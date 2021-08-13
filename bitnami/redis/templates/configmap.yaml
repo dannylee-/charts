@@ -51,6 +51,8 @@ data:
     sentinel down-after-milliseconds {{ .Values.sentinel.masterSet }} {{ .Values.sentinel.downAfterMilliseconds }}
     sentinel failover-timeout {{ .Values.sentinel.masterSet }} {{ .Values.sentinel.failoverTimeout }}
     sentinel parallel-syncs {{ .Values.sentinel.masterSet }} {{ .Values.sentinel.parallelSyncs }}
+    sentinel resolve-hostnames yes
+    sentinel announce-hostnames yes
     # User-supplied sentinel configuration:
     {{- if .Values.sentinel.configuration }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.sentinel.configuration "context" $ ) | nindent 4 }}
