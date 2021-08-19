@@ -1,0 +1,37 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: redis-vpa
+spec:
+  resourcePolicy:
+    containerPolicies:
+    - containerName: redis
+      controlledResources:
+      - cpu
+      - memory
+      maxAllowed:
+        cpu: 2000m
+        memory: 2Gi
+      minAllowed:
+        cpu: 150m
+        memory: 100Mi
+      mode: "Auto"
+    - containerName: sentinel
+      controlledResources:
+      - cpu
+      - memory
+      maxAllowed:
+        cpu: 1000m
+        memory: 100Mi
+      minAllowed:
+        cpu: 150m
+        memory: 25Mi
+      mode: "Auto"
+    - containerName: metrics
+      mode: "Off"
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: StatefulSet
+    name: redis-node
+  updatePolicy:
+    updateMode: "Auto"
